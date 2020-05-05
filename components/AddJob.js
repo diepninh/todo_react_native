@@ -2,7 +2,7 @@ import React, {useState}  from 'react';
 import { StyleSheet, Text,View, TextInput,Button} from 'react-native';
 
 
-export default function AddJob({submitHandler}) {
+export default function AddJob({deleteData}) {
     const [text,setText]= useState(' ');
 
     const changeHandler =(val)=>{
@@ -15,7 +15,7 @@ export default function AddJob({submitHandler}) {
                 placeholder=' add your task'
                 onChangeText={changeHandler}
             />
-            <Button onPress={()=>submitHandler(text)} title='add job' color='#33CCFF'/>
+            <Button onPress={()=>deleteData(text)} title='add job' color='#33CCFF'/>
         </View>
     )
 

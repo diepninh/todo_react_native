@@ -1,11 +1,16 @@
 import React ,{useState} from 'react';
-import { StyleSheet, Text, View, Button,Modal} from 'react-native';
+import { StyleSheet, Text, View, Button,Modal,TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TextInput from "react-native-web/dist/exports/TextInput";
 
-export default function TodoItem2({item,pressHandler}) {
+
+export default function TodoItem2({item,pressHandler, edit}) {
 
     const [modalOpen,setModalOpen]=useState(false);
+    const [textEdit,settextEdit]=useState('')
+    const clickicon=(key)=>{
+        setModalOpen(true);
+        settextEdit(item.text)
+    }
 
     return(
 
@@ -16,7 +21,12 @@ export default function TodoItem2({item,pressHandler}) {
                        onPress={()=> setModalOpen(false)}
                  />
                  </View>
-                 <Button title='edit your job'  color='#33CCFF'/>
+                 <TextInput   style={styles.input}
+                              // value={item.key}
+                     onChangeText={changeEdit}
+                              />
+
+                 <Button title='edit your job'  color='#33CCFF' onPress={() => edit}/>
              </Modal>
              <Icon name="edit" size={20} color='#33CCFF' style={{marginRight:16}}
                    onPress={()=>setModalOpen(true)}/>
@@ -47,5 +57,12 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         minHeight: 40,
     },
+    input: {
+        marginBottom: 10,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    }
 
 })

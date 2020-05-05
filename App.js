@@ -1,9 +1,9 @@
 import React ,{useState}from 'react';
-import { StyleSheet, Text, View, FlatList,ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList,ScrollView ,Modal,TextInput,Button} from 'react-native';
 import Header from './components/Header';
 
 import AddJob from './components/AddJob';
-import TodoItem2 from './components/TodoItem2';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
@@ -14,26 +14,66 @@ export default function App() {
     {text: 'mua mi tom', key: '3'}
   ]);
 //xoá job
-  const pressHandler= (key)=>{
-    setTodos((prevTodos)=>{
-      return prevTodos.filter(todo =>todo.key != key);
+  const deleteData= (key)=>{
+    setTodos((newData)=>{
+      return newData.filter(todo =>todo.key != key);
     });
   }
   // tạo job
   const submitHandler =(text)=> {
-    setTodos((prevTodos)=>{
+    setTodos((newData)=>{
       return [
         {text:text, key: Math.random().toString()},
-          ...prevTodos
+          ...newData
       ]
     })
   }
-  const editJob =(text)=>{
-
+  const [modalOpen,setModalOpen]=useState(false);
+  const [textEdit,settextEdit]=useState('');
+  const [keyEdit,setkeyEdit]=useState('');
+  const clickicon=(key)=>{
+    let newdata= todos.find(todo => todo.key=== key)
+    setModalOpen(true);
+    settextEdit(newdata.text);
+    setkeyEdit(newdata.key);
   }
+  const changetText=(valu)=>{
+    settextEdit(valu);
+  }
+
+  const edit =()=>{
+
+    let olddata = todos.find(todo => todo.key===keyEdit)
+    let newedit = {text : textEdit,key: keyEdit}
+    setModalOpen(false);
+
+    setTodos((newData)=>{
+      return [newData.splice(olddata,1,newedit)]
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Header/>
+      <View>
+        <View  >
+          <Modal visible={modalOpen} animationType='slide'>
+            <View  >
+              <Icon name="close" size={20} color='#33CCFF'
+                    onPress={()=>setModalOpen(false) }
+              />
+            </View>
+            <TextInput
+                value={textEdit}
+                onChangeText={changetText}
+            />
+
+            <Button title='edit your job'  color='#33CCFF' onPress={()=>edit()}/>
+          </Modal>
+
+        </View>
+      </View>
+
       <View style={styles.content}>
         <AddJob submitHandler={submitHandler}/>
         <ScrollView>
@@ -41,9 +81,11 @@ export default function App() {
             <FlatList
                 data={todos}
                 renderItem={({item}) =>(
-
-                    <TodoItem2 item={item} pressHandler={pressHandler}/>
-
+                    <View>
+                      <Text>{item.text}</Text>
+                      <Icon name="edit" size={20} color='#33CCFF' onPress={()=>clickicon(item.key)}/>
+                      <Icon name="trash" size={20} color='#33CCFF' onPress={()=>pressHandler(item.key)}/>
+                    </View>
                 )}
             />
 
