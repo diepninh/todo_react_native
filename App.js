@@ -42,14 +42,16 @@ export default function App() {
   }
 
   const edit =()=>{
-
+    let newData = todos
     let olddata = todos.find(todo => todo.key===keyEdit)
     let newedit = {text : textEdit,key: keyEdit}
     setModalOpen(false);
+    newData.splice(olddata,1,newedit);
+    setTodos(newData)
 
-    setTodos((newData)=>{
-      return [newData.splice(olddata,1,newedit)]
-    })
+    // setTodos((newData)=>{
+    //   return [newData.splice(olddata,1,newedit)]
+    // })
   }
 
   return (
